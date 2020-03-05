@@ -13,6 +13,7 @@ import javax.faces.validator.ValidatorException;
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
 import br.com.caelum.livraria.modelo.Livro;
+import br.com.caelum.livraria.util.RedirectView;
 
 @ManagedBean
 @ViewScoped
@@ -67,6 +68,11 @@ public class LivroBean implements Serializable {
 
 		this.livro = new Livro();
 	}
+	
+	public RedirectView formAutor() {
+		System.out.println("Chamando o formulário do Autor");
+		return new RedirectView("autor");
+	}
 
 	public void comecaComDigitoUm(FacesContext fc, UIComponent component,
 			Object value) throws ValidatorException {
@@ -74,7 +80,7 @@ public class LivroBean implements Serializable {
 		String valor = value.toString();
 		if (!valor.startsWith("1")) {
 			throw new ValidatorException(new FacesMessage(
-					"ISBN deveria come�ar com 1"));
+					"ISBN deveria comentar com 1"));
 		}
 
 	}

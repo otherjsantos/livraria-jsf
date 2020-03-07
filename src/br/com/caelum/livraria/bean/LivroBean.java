@@ -1,6 +1,7 @@
 package br.com.caelum.livraria.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -23,6 +24,8 @@ public class LivroBean implements Serializable {
 
 	private Livro livro = new Livro();
 
+	private List<Livro> livros = new ArrayList<Livro>();
+
 	private Integer autorId;
 
 	public void setAutorId(Integer autorId) {
@@ -36,9 +39,14 @@ public class LivroBean implements Serializable {
 	public Livro getLivro() {
 		return livro;
 	}
+	
+	public void setLivro(Livro livro) {
+		this.livro = livro;
+	}
 
 	public List<Livro> getLivros() {
-		return new DAO<Livro>(Livro.class).listaTodos();
+		livros = new DAO<Livro>(Livro.class).listaTodos();
+		return livros;
 	}
 
 	public List<Autor> getAutores() {
@@ -64,23 +72,34 @@ public class LivroBean implements Serializable {
 			return;
 		}
 
-		new DAO<Livro>(Livro.class).adiciona(this.livro);
+		if (this.livro.getId() == null) {
+			new DAO<Livro>(Livro.class).adiciona(livro);
+		} else {
+			new DAO<Livro>(Livro.class).atualiza(livro);
+		}
 
 		this.livro = new Livro();
 	}
-	
+
+	public void remover(Livro livro) {
+		System.out.println("Removendo livro " + livro.getTitulo());
+		new DAO<Livro>(Livro.class).remove(livro);
+	}
+
+	public void removeAutorLivro(Autor autor) {
+		livro.removeAutor(autor);
+	}
+
 	public RedirectView formAutor() {
 		System.out.println("Chamando o formulário do Autor");
 		return new RedirectView("autor");
 	}
 
-	public void comecaComDigitoUm(FacesContext fc, UIComponent component,
-			Object value) throws ValidatorException {
+	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
 
 		String valor = value.toString();
 		if (!valor.startsWith("1")) {
-			throw new ValidatorException(new FacesMessage(
-					"ISBN deveria comentar com 1"));
+			throw new ValidatorException(new FacesMessage("ISBN deveria comentar com 1"));
 		}
 
 	}

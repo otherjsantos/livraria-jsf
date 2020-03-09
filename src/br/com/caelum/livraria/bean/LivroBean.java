@@ -27,6 +27,16 @@ public class LivroBean implements Serializable {
 	private List<Livro> livros = new ArrayList<Livro>();
 
 	private Integer autorId;
+	
+	private Integer livroId;
+
+	public Integer getLivroId() {
+		return livroId;
+	}
+
+	public void setLivroId(Integer livroId) {
+		this.livroId = livroId;
+	}
 
 	public void setAutorId(Integer autorId) {
 		this.autorId = autorId;
@@ -39,7 +49,7 @@ public class LivroBean implements Serializable {
 	public Livro getLivro() {
 		return livro;
 	}
-	
+
 	public void setLivro(Livro livro) {
 		this.livro = livro;
 	}
@@ -79,6 +89,15 @@ public class LivroBean implements Serializable {
 		}
 
 		this.livro = new Livro();
+	}
+
+	public void carregarLivroPeloId() {
+		System.out.println("invocando o carregar...");
+		this.livro = new DAO<Livro>(Livro.class).buscaPorId(livroId);
+		if(livro == null) {
+			System.out.println("limpando o livro");
+			this.livro = new Livro();
+		}
 	}
 
 	public void remover(Livro livro) {

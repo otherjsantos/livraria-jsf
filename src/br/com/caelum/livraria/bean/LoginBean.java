@@ -28,20 +28,29 @@ public class LoginBean {
 		System.out.println("Tentando logar com o usuário: " + usuario.getEmail());
 
 		Usuario usuarioPesquisado = new UsuarioDAO().getByEmail(usuario.getEmail());
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
-		
+
 		context.getExternalContext().getFlash().setKeepMessages(true);
-		
+
 		if (usuarioPesquisado != null) {
 			if (usuario.getSenha().equals(usuarioPesquisado.getSenha())) {
 				System.out.println("Logando com o usuário: " + usuario.getEmail());
+				context.getExternalContext().getSessionMap().put("usuarioLogado", usuario);
 				return new RedirectView("livro");
 			}
 			context.addMessage(null, new FacesMessage("Senha incorreta, tente novamente..."));
 			return new RedirectView("login");
 		}
 		context.addMessage(null, new FacesMessage("O usuário não existe, tente novamente..."));
+		return new RedirectView("login");
+	}
+
+	public RedirectView efetuarLogout() {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getSessionMap().remove("usuarioLogado");
+		
 		return new RedirectView("login");
 	}
 }

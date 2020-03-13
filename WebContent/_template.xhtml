@@ -12,6 +12,11 @@
 	<h:body >
 			<div id="cabecalho">
 				<h:graphicImage library="img" name="caelum-logo.png"/>
+				<h:form rendered="#{usuarioLogado != null}">
+					<h:outputText value="#{usuarioLogado.email}" />
+					<br/>
+					<h:commandButton value="Logout" action="#{loginBean.efetuarLogout}"/>
+				</h:form>
 				<h1><ui:insert name="titulo"/></h1>
 			</div>
 			
